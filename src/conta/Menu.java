@@ -6,40 +6,29 @@ import java.util.Scanner;
 import conta.model.ContaCorrente;
 import conta.model.ContaPoupanca;
 import conta.util.Cores;
+import conta.controller.ContaController;
 import conta.model.Conta;
 
 public class Menu {
 
 	public static void main(String[] args) {
 
-		// Teste da Classe Conta
-
-		Conta c1 = new Conta(1, 123, 1, "Adriana", 10000.0f);
-		c1.visualizar();
-		c1.sacar(12000.0f);
-		c1.visualizar();
-		c1.depositar(5000.0f);
-		c1.visualizar();
-
-		// Teste Classe conta Corrente
-		ContaCorrente cc1 = new ContaCorrente(2, 123, 1, "Mariana", 15000.0f, 1000.0f);
-		cc1.visualizar();
-		cc1.sacar(12000.0f);
-		cc1.visualizar();
-		cc1.depositar(5000.0f);
-		cc1.visualizar();
-
-		// Teste Classe conta Poupanca
-		ContaPoupanca cp1 = new ContaPoupanca(3, 123, 2, "Victor", 100000.0f, 15);
-		cp1.visualizar();
-		cp1.sacar(12000.0f);
-		cp1.visualizar();
-		cp1.depositar(5000.0f);
-		cp1.visualizar();
+		ContaController contas = new ContaController();
 
 		Scanner scanner = new Scanner(System.in);
 
-		int op = 0;
+		/*
+		 * // Teste Classe conta Corrente ContaCorrente cc1 = new ContaCorrente(2, 123,
+		 * 1, "Mariana", 15000.0f, 1000.0f); cc1.visualizar(); cc1.sacar(12000.0f);
+		 * cc1.visualizar(); cc1.depositar(5000.0f); cc1.visualizar();
+		 * 
+		 * // Teste Classe conta Poupanca ContaPoupanca cp1 = new ContaPoupanca(3, 123,
+		 * 2, "Victor", 100000.0f, 15); cp1.visualizar(); cp1.sacar(12000.0f);
+		 * cp1.visualizar(); cp1.depositar(5000.0f); cp1.visualizar();
+		 */
+
+		int op = 0, numero, agencia, tipo, aniversario;
+		float saldo, limite;
 
 		do {
 			System.out.println(Cores.TEXT_YELLOW + Cores.ANSI_BLACK_BACKGROUND);
@@ -78,43 +67,74 @@ public class Menu {
 				System.exit(0);
 			}
 
+			String titular;
 			switch (op) {
 			case 1:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Criar Conta\n\n");
+				System.out.println("Digite o Numero da Agencia: ");
+				agencia = scanner.nextInt();
+				System.out.println("Digite o Nome do Titular: ");
+				scanner.skip("\\R?");
+				titular = scanner.nextLine();
 
+				do {
+					System.out.println("Digite o Tipo de COnta ( 1-CC ou 2-CP)");
+					tipo = scanner.nextInt();
+				} while (tipo < 1 && tipo > 2);
+
+				System.out.println("Digite o Saldo da OCnta (R$)");
+				saldo = scanner.nextFloat();
+
+				switch (tipo) {
+				case 1: {
+					System.out.println("Digitge o Limite de Crédito (R$): ");
+					limite = scanner.nextFloat();
+					contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+					break;
+				}
+				case 2: {
+					System.out.println("Digite o dia do Aniversario da COnta: ");
+					aniversario = scanner.nextInt();
+					contas.cadastrar(new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+					break;
+				}
+				}
+
+				keyPress();
 				break;
 			case 2:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Listar todas as Contas\n\n");
-
+				contas.listarTodas();
+				keyPress();
 				break;
 			case 3:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Consultar dados da Conta - por número\n\n");
-
+				keyPress();
 				break;
 			case 4:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Atualizar dados da Conta\n\n");
-
+				keyPress();
 				break;
 			case 5:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Apagar a Conta\n\n");
-
+				keyPress();
 				break;
 			case 6:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Saque\n\n");
-
+				keyPress();
 				break;
 			case 7:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Depósito\n\n");
-
+				keyPress();
 				break;
 			case 8:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Transferência entre Contas\n\n");
-
+				keyPress();
 				break;
 			case 9:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "\nBanco do Brazl com Z - O seu Futuro começa aqui!");
 				sobre();
-
+				keyPress();
 				break;
 
 			default:
